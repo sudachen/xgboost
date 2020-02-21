@@ -4,6 +4,7 @@ include(cmake/Utils.cmake)
 list(APPEND CMAKE_MODULE_PATH "${xgboost_SOURCE_DIR}/cmake/modules")
 cmake_policy(SET CMP0022 NEW)
 
+
 if ((${CMAKE_VERSION} VERSION_GREATER 3.13) OR (${CMAKE_VERSION} VERSION_EQUAL 3.13))
   cmake_policy(SET CMP0077 NEW)
 endif ((${CMAKE_VERSION} VERSION_GREATER 3.13) OR (${CMAKE_VERSION} VERSION_EQUAL 3.13))
@@ -101,6 +102,11 @@ if (USE_OPENMP)
   endif (APPLE)
   find_package(OpenMP REQUIRED)
 endif (USE_OPENMP)
+
+
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -ffunction-sections -fdata-sections -fvisibility=hidden")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -ffunction-sections -fdata-sections -fvisibility=hidden")
+set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -Wl,-gc-sections")
 
 # dmlc-core
 msvc_use_static_runtime()
@@ -245,3 +251,4 @@ endif (GOOGLE_TEST)
 # replace /MD with /MT. See https://github.com/dmlc/xgboost/issues/4462
 # for issues caused by mixing of /MD and /MT flags
 msvc_use_static_runtime()
+
